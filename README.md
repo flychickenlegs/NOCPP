@@ -9,6 +9,7 @@
     ├── ClassGenerator  # Convert JSON Schema to C# classes 
     ├── NOCPP           # Core communication protocol logic 
     ├── Simulator       # Simulate communication for testing
+    ├── LICENSE
     └── README.md
   
 ### ClassGenerator
