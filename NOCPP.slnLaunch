@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "\u65B0\u589E\u8A2D\u5B9A\u6A94",
+    "Projects": [
+      {
+        "Path": "ClassGenerator\\ClassGenerator.csproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "ClassGenerator"
+      },
+      {
+        "Path": "NOCPP\\NOCPP.csproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "NOCPP"
+      },
+      {
+        "Path": "Simulator\\Simulator.csproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "Simulator"
+      }
+    ]
+  }
+]
