@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NOCPP.Interfaces
 {
-    public interface IActionHandler_v16 : IActionHandler
+    public interface IRequestHandler_v16 : IRequestHandler
     {
         Task<MessageType?> ChangeConfiguration(Call call) { return null; }
         Task<MessageType?> DiagnosticsStatusNotification(Call call) { return null; }

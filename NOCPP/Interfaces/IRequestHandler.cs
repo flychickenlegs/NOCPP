@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NOCPP.Interfaces
 {
-    public interface IActionHandler
+    public interface IRequestHandler
     {
         Task<MessageType?> Authorize(Call call) { return null; }
         Task<MessageType> BootNotification(Call call) { return null; }

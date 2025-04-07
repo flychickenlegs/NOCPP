@@ -16,9 +16,9 @@ namespace Simulator
             Console.WriteLine("Hello, NOCPP!");
             Message message_cs = new Message();
             Message message_cp = new Message();
-            ResponseHandler responseHandler = new ResponseHandler();
-            message_cs.CreateResponseHandler(responseHandler);
-            message_cp.CreateResponseHandler(responseHandler);
+            RequestHandler requestHandler = new RequestHandler();
+            message_cs.CreateRequestHandler(requestHandler);
+            message_cp.CreateRequestHandler(requestHandler);
 
             string str_device = "";
 
@@ -37,7 +37,7 @@ namespace Simulator
                     Console.WriteLine("Invalid entry, re-enter CS or CP.");
                 }
             }
-            Console.WriteLine($"You have selected {str_device}。");
+            Console.WriteLine($"You have selected {str_device}.");
 
             switch (str_device)
             {
@@ -46,7 +46,7 @@ namespace Simulator
                     CentralSystem cs = new CentralSystem("http://localhost:54321/", "1.6", ctsCS.Token);
                     cs.StartAsync();
                     cs.OnMessageReceived = async message => { await CS_AutoRun(message, cs); };
-                    //CS_Send(cs);
+                    //CS_Send(cs); // Case2() will be used.
 
                     break;
 
@@ -73,10 +73,8 @@ namespace Simulator
         {
 
             Message message_cs = new Message();
-            ResponseHandler responseHandler = new ResponseHandler();
-            message_cs.CreateResponseHandler(responseHandler);
-
-            //MessageAwaiter msgAwaiter = new MessageAwaiter();
+            RequestHandler requestHandler = new RequestHandler();
+            message_cs.CreateRequestHandler(requestHandler);
 
             HandleResult handleRes;
             MessageType msgType_receive;
@@ -89,7 +87,6 @@ namespace Simulator
             {
                 if (handleRes.IsCall)
                 {
-                    //callResp = await Message.ResponseCreater((Call)handleRes.Message);
                     if (handleRes.Message is CallResult callResult)
                     {
                         await cs.SendAsync(Utility.ClassToJsonArray(callResult));
@@ -104,16 +101,16 @@ namespace Simulator
         {
             while (true)
             {
-                Console.WriteLine("請輸入數字: ");
+                Console.WriteLine("Please input number (1(RemoteStartTransaction) or 2(RemoteStopTransaction)):");
                 string str_input = Console.ReadLine();
 
                 if (int.TryParse(str_input, out int int_input))
                 {
-                    Console.WriteLine($"你輸入的整數是：{int_input}");
+                    Console.WriteLine($"The integer you entered is:{int_input}.");
                 }
                 else
                 {
-                    Console.WriteLine("輸入的不是有效的整數！");
+                    Console.WriteLine("The input is not a valid integer!");
                 }
 
                 switch (int_input)

@@ -56,7 +56,7 @@ namespace NOCPP
                                     msgType_handleResult = new HandleResult()
                                     {
                                         IsCall = true,
-                                        Message = await CallHandler((Call)msgType_result)
+                                        Message = await HandleCall((Call)msgType_result)
                                     };
                                 }
                                 else
@@ -160,18 +160,18 @@ namespace NOCPP
         #endregion
 
         #region Action Handler
-        private Dictionary<string, Func<Call, Task<MessageType?>>> _dict_responseHandlers = 
+        private Dictionary<string, Func<Call, Task<MessageType?>>> _dict_requestHandlers = 
             new Dictionary<string, Func<Call, Task<MessageType?>>>();
 
         /// <summary>
         /// Registration Action Function
         /// </summary>
-        /// <param name="actionHandler"></param>
+        /// <param name="requestHandler"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        public void CreateResponseHandler(IActionHandler_v16 actionHandler)
+        public void CreateRequestHandler(IRequestHandler_v16 requestHandler)
         {
-            List<MethodInfo> list_allMethods = new List<MethodInfo>(typeof(IActionHandler_v16).GetMethods());
-            foreach (var baseInterface in typeof(IActionHandler_v16).GetInterfaces())
+            List<MethodInfo> list_allMethods = new List<MethodInfo>(typeof(IRequestHandler_v16).GetMethods());
+            foreach (var baseInterface in typeof(IRequestHandler_v16).GetInterfaces())
             {
                 list_allMethods.AddRange(baseInterface.GetMethods());
             }
@@ -179,9 +179,9 @@ namespace NOCPP
             foreach (var method in list_allMethods)
             {
                 string actionName = method.Name;
-                _dict_responseHandlers[actionName] = async (Call call) =>
+                _dict_requestHandlers[actionName] = async (Call call) =>
                 {
-                    var result = method.Invoke(actionHandler, new object[] { call });
+                    var result = method.Invoke(requestHandler, new object[] { call });
                     if (result is Task<MessageType?> task)
                     {
                         MessageType? msgType_result = await task; 
@@ -210,12 +210,12 @@ namespace NOCPP
         /// <summary>
         /// Registration Action Function
         /// </summary>
-        /// <param name="actionHandler"></param>
+        /// <param name="requestHandler"></param>
         /// <exception cref="InvalidOperationException"></exception>
-        public void CreateResponseHandler(IActionHandler_v201 actionHandler)
+        public void CreateRequestHandler(IRequestHandler_v201 requestHandler)
         {
-            List<MethodInfo> list_allMethods = new List<MethodInfo>(typeof(IActionHandler_v201).GetMethods());
-            foreach (var baseInterface in typeof(IActionHandler_v201).GetInterfaces())
+            List<MethodInfo> list_allMethods = new List<MethodInfo>(typeof(IRequestHandler_v201).GetMethods());
+            foreach (var baseInterface in typeof(IRequestHandler_v201).GetInterfaces())
             {
                 list_allMethods.AddRange(baseInterface.GetMethods());
             }
@@ -223,9 +223,9 @@ namespace NOCPP
             foreach (var method in list_allMethods)
             {
                 string actionName = method.Name;
-                _dict_responseHandlers[actionName] = async (Call call) =>
+                _dict_requestHandlers[actionName] = async (Call call) =>
                 {
-                    var result = method.Invoke(actionHandler, new object[] { call });
+                    var result = method.Invoke(requestHandler, new object[] { call });
                     if (result is Task<MessageType?> task)
                     {
                         MessageType? msgType_result = await task; 
@@ -255,15 +255,15 @@ namespace NOCPP
         /// </summary>
         /// <param name="call"></param>
         /// <returns></returns>
-        public async Task<MessageType?> CallHandler(Call call) 
+        public async Task<MessageType?> HandleCall(Call call) 
         {
             string str_action = call.Action;
             try
             {
 
-                if (_dict_responseHandlers.ContainsKey(str_action))
+                if (_dict_requestHandlers.ContainsKey(str_action))
                 {
-                    return await _dict_responseHandlers[str_action].Invoke(call);
+                    return await _dict_requestHandlers[str_action].Invoke(call);
                 }
                 else
                 {

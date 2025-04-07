@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NOCPP.Interfaces
 {
-    public interface IActionHandler_v201 : IActionHandler
+    public interface IRequestHandler_v201 : IRequestHandler
     {
         Task<MessageType?> CertificateSigned(Call call) { return null; }
         Task<MessageType?> ClearDisplayMessage(Call call) { return null; }
